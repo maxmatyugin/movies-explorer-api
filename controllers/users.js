@@ -1,10 +1,10 @@
 const { NODE_ENV, JWT_SECRET } = process.env;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const ConflictError = require('../errors/conflict-err');
-const User = require('../models/user');
 
 module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
@@ -55,6 +55,7 @@ module.exports.createProfile = (req, res, next) => {
       res.status(200).send(user);
     })
     .catch((err) => {
+      console.log(err);
       if (err.code === 11000) {
         throw new ConflictError('Такой пользователь уже существует');
       }
