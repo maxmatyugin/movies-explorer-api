@@ -42,6 +42,9 @@ module.exports.createProfile = (req, res, next) => {
   if (!email || !password) {
     throw new BadRequestError('Не передан емейл или пароль');
   }
+  if (!name) {
+    throw new BadRequestError('Введите имя');
+  }
 
   bcrypt
     .hash(password, 10)
