@@ -1,8 +1,9 @@
 const moviesRouter = require('express').Router();
-const { getSavedMovies, createMovie, deleteMovieById } = require('../controllers/movies');
+const auth = require('../middlewares/auth');
+const { getSavedMovies, saveMovie, deleteMovieById } = require('../controllers/movies');
 
-moviesRouter.get('/movies', getSavedMovies);
-moviesRouter.post('/movies', createMovie);
-moviesRouter.delete('/movies/movieId', deleteMovieById);
+moviesRouter.get('/movies', auth, getSavedMovies);
+moviesRouter.post('/movies', auth, saveMovie);
+moviesRouter.delete('/movies/:movieId', auth, deleteMovieById);
 
 module.exports = moviesRouter;
