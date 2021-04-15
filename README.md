@@ -1,2 +1,2 @@
 # Бекенд дипломного проекта
-## URL для запросов http://maxmovies.nomoredomains.icu
+## URL для запросов https://api.maxmovies.nomoredomains.icu

@@ -24,28 +24,26 @@ const movieSchema = new mongoose.Schema({
   image: {
     type: String,
     required: true,
-    // eslint-disable-next-line no-useless-escape
-    match: [/(https?:\/\/)(www\.)?([\w\W\d]{1,})(\.)?([a-zA-Z]{1,10})([\w\W\d]{1,})?\#?/],
+    match: [/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm],
   },
   trailer: {
     type: String,
     required: true,
-    // eslint-disable-next-line no-useless-escape
-    match: [/(https?:\/\/)(www\.)?([\w\W\d]{1,})(\.)?([a-zA-Z]{1,10})([\w\W\d]{1,})?\#?/],
+    match: [/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm],
   },
   thumbnail: {
     type: String,
     required: true,
-    // eslint-disable-next-line no-useless-escape
-    match: [/(https?:\/\/)(www\.)?([\w\W\d]{1,})(\.)?([a-zA-Z]{1,10})([\w\W\d]{1,})?\#?/],
+    match: [/^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/gm],
   },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
     required: true,
+    select: false,
   },
   movieId: {
-    type: String,
+    type: Number,
     required: true,
   },
   nameRU: {
