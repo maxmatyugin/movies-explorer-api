@@ -7,9 +7,6 @@ const Movie = require('../models/movie');
 module.exports.getSavedMovies = (req, res, next) => {
   Movie.find({ owner: req.user._id })
     .then((movies) => {
-      if (!movies) {
-        throw new NotFoundError(NotFoundMessage);
-      }
       res.status(200).send(movies);
     })
     .catch(next);
@@ -58,10 +55,7 @@ module.exports.saveMovie = (req, res, next) => {
       nameEN,
     }))
     .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BadRequestError(badRequestMessage);
-      }
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
         throw new BadRequestError(badRequestMessage);
       }
       next(err);
