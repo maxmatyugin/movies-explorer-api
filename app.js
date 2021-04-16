@@ -3,6 +3,7 @@ const express = require('express');
 const helmet = require('helmet');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const { errors } = require('celebrate');
 const cors = require('cors');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -30,9 +31,8 @@ app.use(requestLogger);
 app.use(limiter);
 
 app.use(routes);
-
+app.use(errors());
 app.use(errorLogger);
-
 app.use(errorHandler);
 
 app.listen(PORT, () => {

@@ -1,7 +1,9 @@
 const NotFoundError = require('../errors/not-found-err');
 const BadRequestError = require('../errors/bad-request-err');
 const Forbidden = require('../errors/forbidden-err');
-const { NotFoundMessage, badRequestMessage, forbiddenMessage } = require('../errors/error-messages');
+const {
+  notFoundMessage, badRequestMessage, forbiddenMessage, okMessage,
+} = require('../errors/error-messages');
 const Movie = require('../models/movie');
 
 module.exports.getSavedMovies = (req, res, next) => {
@@ -65,14 +67,15 @@ module.exports.saveMovie = (req, res, next) => {
 
 module.exports.deleteMovieById = (req, res, next) => {
   Movie.findByIdAndRemove(req.params.movieId)
+    .select('+owner')
     .then((movie) => {
       if (!movie) {
-        throw new NotFoundError(NotFoundMessage);
+        throw new NotFoundError(notFoundMessage);
       }
       if (movie.owner.toString() !== req.user._id) {
         throw new Forbidden(forbiddenMessage);
       }
-      res.status(200).send({ message: 'Фильм удален' });
+      res.status(200).send({ message: okMessage });
     })
     .catch((error) => {
       if (error.name === 'CastError') {
