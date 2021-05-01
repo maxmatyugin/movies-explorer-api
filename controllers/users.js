@@ -50,18 +50,21 @@ module.exports.createProfile = (req, res, next) => {
     throw new BadRequestError(badRequestMessage);
   }
 
-  bcrypt
-    .hash(password, 10)
-    .then((hash) => User.create({
-      name, email, password: hash,
-    }))
+  User.findOne({ email })
+    .then((userExist) => {
+      if (userExist) {
+        throw new ConflictError(conflictMessage);
+      }
+      return bcrypt
+        .hash(password, 10)
+        .then((hash) => User.create({
+          name, email, password: hash,
+        }));
+    })
     .then(() => {
       res.status(200).send({ name, email });
     })
     .catch((err) => {
-      if (err.code === 11000) {
-        throw new ConflictError(conflictMessage);
-      }
       if (err.name === 'ValidationError') {
         throw new BadRequestError(badRequestMessage);
       }
